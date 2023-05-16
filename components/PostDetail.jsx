@@ -36,7 +36,14 @@ function PostDetail({ post }) {
             ))}
           </h2>
         );
-
+        case "a":
+            return (
+              <a href={item} key={index} className="text-xl font-semibold mb-4">
+                {modifiedText.map((item, i) => (
+                  <React.Fragment key={i}>{item}</React.Fragment>
+                ))}
+              </a>
+            );
       case "paragraph":
         return (
           <p key={index} className="mb-8">
