@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 
 function PostDetail({ post }) {
+
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
 
@@ -23,41 +24,25 @@ function PostDetail({ post }) {
       case "heading-three":
         return (
           <h3 key={index} className="text-xl font-semibold mb-4">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </h3>
         );
       case "heading-two":
         return (
           <h2 key={index} className="text-xl font-semibold mb-4">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </h2>
         );
-        case "a":
-            return (
-              <a href={item} key={index} className="text-xl font-semibold mb-4">
-                {modifiedText.map((item, i) => (
-                  <React.Fragment key={i}>{item}</React.Fragment>
-                ))}
-              </a>
-            );
       case "paragraph":
         return (
           <p key={index} className="mb-8">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </p>
         );
       case "heading-four":
         return (
           <h4 key={index} className="text-md font-semibold mb-4">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </h4>
         );
       case "image":
@@ -70,6 +55,21 @@ function PostDetail({ post }) {
             src={obj.src}
           />
         );
+      case "link":
+        if (obj.openInNewTab == true) {
+          return (
+            <a href={obj.href} target="_blank" key={index} className="text-blue-500">
+              {obj.children[0].text}
+            </a>
+          );
+        } else {
+          return (
+            <a href={obj.href} key={index} className="text-blue-500">
+              {obj.children[0].text}
+            </a>
+          );
+        }
+
       default:
         return modifiedText;
     }
@@ -119,7 +119,7 @@ function PostDetail({ post }) {
         <h1 className="mb-8 text-3xl font-semibold">{post.title}</h1>
         {post.content.raw.children.map((typeObj, index) => {
           const children = typeObj.children.map((item, itemIndex) =>
-            getContentFragment(itemIndex, item.text)
+            getContentFragment(itemIndex, item.text, item, item.type)
           );
           return getContentFragment(index, children, typeObj, typeObj.type);
         })}
